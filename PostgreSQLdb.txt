@@ -1,0 +1,38 @@
+﻿
+CREATE TABLE Filmas (
+	Filmo_ID 	INTEGER		NOT NULL,
+	Pavadinimas 	VARCHAR(32) 	NOT NULL,
+	Kategorija 	CHAR(12) 	DEFAULT 'Kita',
+	Kaina 		SMALLINT 	,
+	Metai 		SMALLINT 	DEFAULT 0,
+	PRIMARY KEY (Filmo_ID)
+);
+
+
+CREATE TABLE Uzsakymas (
+	Uzsakymo_Nr 	INTEGER 	NOT NULL CONSTRAINT blogas_nr_uzsakymo CHECK (Uzsakymo_Nr > 0),
+	Paemimo_data 	DATE 		NOT NULL,
+	Grazinimo_data 	DATE 		NOT NULL,
+	Kliento_Nr 	SMALLINT 	NOT NULL,
+	PRIMARY KEY (Uzsakymo_Nr),
+	FOREIGN KEY (Kliento_Nr) REFERENCES Klientas ON DELETE RESTRICT
+);
+
+
+CREATE TABLE Filmu_uzsakymas(
+	Filmo_ID 	INTEGER 	NOT NULL,
+	Uzsakymo_Nr 	INTEGER 	NOT NULL,
+	PRIMARY KEY (Filmo_ID, Uzsakymo_Nr),
+	FOREIGN KEY (Filmo_ID) REFERENCES Filmas ON DELETE RESTRICT,
+	FOREIGN KEY (Uzsakymo_Nr) REFERENCES Uzsakymas ON DELETE RESTRICT
+
+);
+
+CREATE TABLE Klientas (
+	Kliento_Nr 	SERIAL	NOT NULL CHECK (Kliento_Nr > 0),
+	Vardas 		VARCHAR(20) 	NOT NULL,
+	Pavarde 	VARCHAR(20) 	NOT NULL,
+	Telefonas 	CHAR(20) 	NOT NULL,
+	PRIMARY KEY (Kliento_Nr)
+
+);
